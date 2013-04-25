@@ -9,4 +9,5 @@
 data/*
 output/*
 
+config.R
 database.R
