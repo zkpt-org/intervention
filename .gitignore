@@ -6,8 +6,5 @@
 *.DS_Store
 !.gitignore
 
-data/*
-output/*
-
 config.R
 database.R
