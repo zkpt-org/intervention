@@ -1,0 +1,12 @@
+*.RData
+*.Rhistory
+.Rproj.user/*
+*.Rproj
+.DS_Store*
+*.DS_Store
+!.gitignore
+
+data/*
+output/*
+
+database.R
