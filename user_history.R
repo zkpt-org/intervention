@@ -7,16 +7,16 @@ UserHistory<-function(user,start,duration){
     Sys.setenv(TZ='GMT')    
     day0 = start - (start %% DAY)
     #print(as.POSIXlt(day0, origin="1970-01-01 00:00.00 UTC"))
-
-    if(!is.na(as.numeric(sqldf(paste0("SELECT initdate FROM pedometer WHERE UserId=",user," ORDER BY initdate ASC LIMIT 1")))))
-        pedometer_init=as.numeric(sqldf(paste0("SELECT initdate FROM pedometer WHERE UserId=",user," ORDER BY initdate ASC LIMIT 1")))
-    else
-        pedometer_init=as.numeric(sqldf("SELECT MAX(date) FROM pedometer"))
     
-    if(!is.na(as.numeric(sqldf(paste0("SELECT initdate FROM login WHERE UserId=",user," ORDER BY initdate ASC LIMIT 1")))))
-        login_init=as.numeric(sqldf(paste0("SELECT initdate FROM login WHERE UserId=",user," ORDER BY initdate ASC LIMIT 1")))
+    if(!is.na(as.numeric(pedometer$initdate[pedometer$UserId==user][1])))
+        pedometer_init=as.numeric(pedometer$initdate[pedometer$UserId==user][1])
     else
-        login_init=as.numeric(sqldf("SELECT MAX(date) FROM login"))
+        pedometer_init=as.numeric(pedometer$date[pedometer$date==max(pedometer$date)])[1]
+    
+    if(!is.na(as.numeric(login$initdate[login$UserId==user][1])))
+        login_init=as.numeric(login$initdate[login$UserId==user][1])
+    else
+        login_init=as.numeric(login$date[login$date==max(login$date)])[1]
 
     minim=min(pedometer_init,login_init)
     userinit=minim-(minim %% DAY)
@@ -32,6 +32,7 @@ UserHistory<-function(user,start,duration){
     c_weekend<-c()
     c_questions<-c()
     c_selftracking<-c()
+
     length(c_dates)<-duration
     length(c_login)<-duration
     length(c_pedometer)<-duration
@@ -41,7 +42,7 @@ UserHistory<-function(user,start,duration){
     length(c_weekend)<-duration
     length(c_questions)<-duration
     length(c_selftracking)<-duration
-
+    
     for(i in 1:duration){
         d = day0 - (i*DAY) + DAY
         c_dates[i]=d

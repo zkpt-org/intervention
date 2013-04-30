@@ -16,13 +16,13 @@ source("user_history.R")
 start=as.numeric(sqldf("SELECT MAX(date) from login"))
 duration=28
 
-# MAX UserId is 19441
+# current MAX UserId is 19441
 user_min=8099
-user_max=8110
+user_max=8109
 users=sqldf(paste0("SELECT DISTINCT UserId FROM login WHERE UserId >=",user_min," AND UserId<=",user_max))
 
 history<-data.frame("user"=users$UserId,"login"=NA,"pedometer"=NA,"bp"=NA,"glucose"=NA,
-                     "weight"=NA,"weekend"=NA,"questions"=NA,"tracking"=NA)
+                     "weight"=NA,"weekend"=NA,"questions"=NA,"tracking"=NA,"tenure"=NA)
 i=1
 apply(history["user"],1,function(user){
     user_history<-UserHistory(user,start,duration)
@@ -34,6 +34,6 @@ apply(history["user"],1,function(user){
     history$weekend[i]   <<- length(user_history$weekend[user_history$weekend>0])
     history$questions[i] <<- length(user_history$questions[user_history$questions>0])
     history$tracking[i]  <<- length(user_history$tracking[user_history$tracking>0])
-    
+    history$tenure[i]    <<- (start - as.numeric(login$initdate[login$UserId==as.numeric(user)][1]))/DAY
     i<<-i+1
 })
