@@ -1,5 +1,21 @@
 # Goal: User Vector = [between day x-1 to x-n count number of days where activity exists]
 
+GenerateHitory<-function(user,n,duration){
+  day0=start-((n-1)*(duration*DAY))
+  #print(as.Date(as.POSIXlt(day0, origin="1970-01-01 00:00.00 UTC")))
+  user_history<-UserHistory(user,day0,duration)
+  usr=as.numeric(user)
+  history[paste0("pedometer", n)][history["user"]==user] <<- length(user_history$pedometer[user_history$pedometer>0])
+  history[paste0("login",     n)][history["user"]==user] <<- length(user_history$login[user_history$login>0])
+  history[paste0("bp",        n)][history["user"]==user] <<- length(user_history$bp[user_history$bp>0])
+  history[paste0("glucose",   n)][history["user"]==user] <<- length(user_history$glucose[user_history$glucose>0])
+  history[paste0("weight",    n)][history["user"]==user] <<- length(user_history$weight[user_history$weight>0])
+  history[paste0("weekend",   n)][history["user"]==user] <<- length(user_history$weekend[user_history$weekend>0])
+  history[paste0("questions", n)][history["user"]==user] <<- length(user_history$questions[user_history$questions>0])
+  history[paste0("tracking",  n)][history["user"]==user] <<- length(user_history$tracking[user_history$tracking>0])
+  history[paste0("tenure",    n)][history["user"]==user] <<- (day0 - as.numeric(login$initdate[login$UserId==as.numeric(user)][1]))/DAY
+}
+
 UserHistory<-function(user,start,duration){
     user=as.numeric(user)
 
