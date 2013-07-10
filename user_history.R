@@ -3,8 +3,10 @@
 GenerateHitory<-function(user,start,n,duration){
   date = start - (start %% DAY)
   dayn = date  - ((n-1)*(duration*DAY))
+  
   print(paste("user:",user,"pass:",n,c))
   #print(as.Date(as.POSIXlt(dayn, origin="1970-01-01 00:00.00 UTC")))
+  
   user_history<-UserHistory(user,dayn,duration)
   
   history[c,paste0("pedometer", n)] <<- length(user_history$pedometer[user_history$pedometer>0])
@@ -15,14 +17,7 @@ GenerateHitory<-function(user,start,n,duration){
   history[c,paste0("weekend",   n)] <<- length(user_history$weekend[user_history$weekend>0])
   history[c,paste0("questions", n)] <<- length(user_history$questions[user_history$questions>0])
   history[c,paste0("tenure",    n)] <<- (dayn - as.numeric(initdate(user)))/DAY
-  # history[paste0("pedometer", n)][history["user"]==user && history["date"]==start] <<- length(user_history$pedometer[user_history$pedometer>0])
-  # history[paste0("login",     n)][history["user"]==user && history["date"]==start] <<- length(user_history$login[user_history$login>0])
-  # history[paste0("bp",        n)][history["user"]==user && history["date"]==start] <<- length(user_history$bp[user_history$bp>0])
-  # history[paste0("glucose",   n)][history["user"]==user && history["date"]==start] <<- length(user_history$glucose[user_history$glucose>0])
-  # history[paste0("weight",    n)][history["user"]==user && history["date"]==start] <<- length(user_history$weight[user_history$weight>0])
-  # history[paste0("weekend",   n)][history["user"]==user && history["date"]==start] <<- length(user_history$weekend[user_history$weekend>0])
-  # history[paste0("questions", n)][history["user"]==user && history["date"]==start] <<- length(user_history$questions[user_history$questions>0])
-  # history[paste0("tenure",    n)][history["user"]==user && history["date"]==start] <<- (dayn - as.numeric(initdate(user)))/DAY
+
   c<<-c+1
   rm(user_history)
 }
@@ -87,7 +82,6 @@ UserHistory<-function(user,day0,duration){
     colnames(usrhist)=c("day","dates","login","pedometer","bp","weight","glucose","weekend")
     
     return(usrhist)
-    # rm(c_bp,c_glucose,c_login,c_pedometer,c_weekend,c_weight,c_dates)
 }
 
 initdate<-function(user){
