@@ -5,6 +5,8 @@ load('./data/bp.RData')
 load('./data/glucose.RData')
 load('./data/questions.RData')
 load('./data/init.RData')
+load('./data/user_data.RData')
+load('./data/condition.RData')
 
 # Define time periods in seconds.
 YEAR  = 31536000
@@ -159,3 +161,11 @@ questions$months=as.integer(as.character(questions$months))
 questions$days=as.integer(as.character(questions$days))
 
 rm(questions2,questions_init)
+
+
+#------------------------------------------------------------------------------------- Userdata
+user_data=subset(user_data, user_data['PatientIsdeleted']==0)
+user_data=subset(user_data, select=-c(PatientID,DOB,Marital_status,Language,PatientIsdeleted,
+                                      CreateDate,Country,ProgramId,Program_IsDeleted,OrganizationId,
+                                      Program_State,OrganizationDescription,OrganizationCreatedon,IsActive))
+user_data=unique(user_data)
